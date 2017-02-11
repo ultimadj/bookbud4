@@ -1,0 +1,8 @@
+<div *ngIf="display.loading">Loading...</div>
+<div *ngIf="display.showLogout">
+  <div> {{ (af.auth | async)?.uid }} </div>
+  <button (click)="logout()">Logout</button>
+</div>
+<div *ngIf="display.showLogin">
+  <button (click)="login()">Login</button>
+</div>

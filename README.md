@@ -6,6 +6,7 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 - https://github.com/angular/quickstart
 - https://github.com/angular/angularfire2
 - https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
+- https://juristr.com/blog/2016/02/debugging-angular2-console/
 
 ### Tools
 

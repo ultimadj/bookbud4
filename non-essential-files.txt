@@ -1,9 +1,0 @@
-.travis.yml
-*.spec*.ts
-CHANGELOG.md
-e2e
-favicon.ico
-karma.conf.js
-karma-test-shim.js
-non-essential-files.txt
-protractor.config.js

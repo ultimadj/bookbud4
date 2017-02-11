@@ -13,6 +13,20 @@
     <script src="node_modules/zone.js/dist/zone.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
 
+    
+    <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCJ54VS7XEI_S54x8GwRwz-CwHNDWoB_m8",
+        authDomain: "bookbud4.firebaseapp.com",
+        databaseURL: "https://bookbud4.firebaseio.com",
+        storageBucket: "bookbud4.appspot.com",
+        messagingSenderId: "557974738162"
+      };
+      firebase.initializeApp(config);
+    </script>
+
     <script src="systemjs.config.js"></script>
     <script>
       System.import('main.js').catch(function(err){ console.error(err); });

@@ -5,6 +5,7 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 ### Core Projects
 - https://github.com/angular/quickstart
 - https://github.com/angular/angularfire2
+- https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
 
 ### Tools
 

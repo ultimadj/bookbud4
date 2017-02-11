@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {AngularFireModule, AuthProviders, AuthMethods} from 'angularfire2';
+import { LoginComponent } from './login/login.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -23,7 +24,7 @@ const firebaseAuthConfig = {
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
   ],
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent, LoginComponent ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

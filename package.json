@@ -1,0 +1,23 @@
+{
+  "name": "bookbud4",
+  "version": "1.0.0",
+  "description": "Bookbud, but this time with firebase",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "angular-cli": "^1.0.0-beta.28.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ultimadj/bookbud4.git"
+  },
+  "author": "David Johnson <ultimadj@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ultimadj/bookbud4/issues"
+  },
+  "homepage": "https://github.com/ultimadj/bookbud4#readme"
+}

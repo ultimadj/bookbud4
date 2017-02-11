@@ -6,6 +6,16 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 - https://github.com/angular/quickstart
 - https://github.com/angular/angularfire2
 
+### Tools
+
+    npm install -g angular-cli
+    npm install -g typings
+    npm install -g typescript
+    npm install -g firebase-tools
+
+### Deployment
+Run fb* (see packages.json).
+
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 

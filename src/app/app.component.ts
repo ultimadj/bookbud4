@@ -1,19 +1,26 @@
 import {Component} from '@angular/core';
 import {AngularFire} from 'angularfire2';
-import {AuthGuardService} from "./auth-guard.service";
 
 @Component({
   selector: 'app-root',
   template: `
-<h1>App</h1>
-<app-nav></app-nav>
-<router-outlet></router-outlet>
+<div *ngIf="(af.auth | async)?.uid">
+  <div> {{ (af.auth | async)?.uid }} </div>
+  <button (click)="logout()">Logout</button>
+</div>
+<div *ngIf="!(af.auth | async)?.uid">
+  <app-login></app-login>
+</div>
   `,
 })
 export class AppComponent {
   /*
   More on the async pipe: https://angular.io/docs/ts/latest/api/common/index/AsyncPipe-pipe.html
    */
-  constructor(public af: AngularFire, public authGuard: AuthGuardService) {
+  constructor(public af: AngularFire) {
+  }
+
+  logout() {
+    this.af.auth.logout();
   }
 }

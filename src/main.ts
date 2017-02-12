@@ -7,4 +7,9 @@ if (environment.production) {
   enableProdMode();
 }
 
+// Enable production mode unless running locally
+if (!/localhost/.test(document.location.host)) {
+  enableProdMode();
+}
+
 platformBrowserDynamic().bootstrapModule(AppModule);

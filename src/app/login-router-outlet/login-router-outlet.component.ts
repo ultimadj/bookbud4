@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFire} from "angularfire2";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-login-router-outlet',
@@ -9,25 +10,21 @@ import {AngularFire} from "angularfire2";
 export class LoginRouterOutletComponent {
   display = {};
 
-  constructor(public af: AngularFire) {
+  constructor(private userService: UserService) {
     this.display = {loading: true};
-    af.auth.subscribe(auth => {
-      if(auth) {
-        console.log('logged in', auth);
+    userService.user.subscribe((userDetail) => {
+      if(userDetail) {
         this.display = {showLogout: true};
       } else {
-        console.log('not logged in');
         this.display = {showLogin: true};
       }
     });
   }
 
   login() {
-    this.af.auth.login();
+    this.userService.login();
   }
-
   logout() {
-    this.af.auth.logout();
+    this.userService.logout();
   }
-
 }

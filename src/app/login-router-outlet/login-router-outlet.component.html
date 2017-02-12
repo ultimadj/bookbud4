@@ -2,7 +2,6 @@
   <nav class="navbar navbar-default">
     <div *ngIf="display.loading" class="loading">Loading...</div>
     <div *ngIf="display.showLogout">
-      <div style="display: none"> {{ (af.auth | async)?.uid }}</div>
       <ul class="nav navbar-nav">
         <li><a [routerLink]="['/']">Home</a></li>
         <li routerLinkActive="active"><a [routerLink]="['/book']">Books</a></li>

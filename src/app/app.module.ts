@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { LandingComponent } from './landing/landing.component';
 import {UserService} from "./user.service";
 import {MaterialModule} from "@angular/material";
+import 'hammerjs';
 
 // Must export the config
 export const firebaseConfig = {

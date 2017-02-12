@@ -8,6 +8,11 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 - https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
 - https://juristr.com/blog/2016/02/debugging-angular2-console/
 
+### Visual Styles
+- https://material.io/icons
+- https://material.angular.io/components
+- TODO: Continue here: https://github.com/jelbourn/material2-app
+
 ### Tools
 
     npm install -g angular-cli

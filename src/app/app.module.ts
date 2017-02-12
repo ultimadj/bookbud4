@@ -9,6 +9,7 @@ import { ProtectedDirective } from './protected.directive';
 import { LoginComponent } from './login/login.component';
 import { LandingComponent } from './landing/landing.component';
 import {UserService} from "./user.service";
+import {MaterialModule} from "@angular/material";
 
 // Must export the config
 export const firebaseConfig = {
@@ -29,7 +30,8 @@ const firebaseAuthConfig = {
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule.forRoot()
   ],
   declarations: [ AppComponent, LoginRouterOutletComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
   providers: [UserService],

@@ -3,6 +3,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {AngularFireModule, AuthProviders, AuthMethods} from 'angularfire2';
 import { LoginRouterOutletComponent } from './login-router-outlet/login-router-outlet.component';
+import {AppRoutingModule} from "./app-routing.module";
+import { BookComponent } from './book/book.component';
+import { ProtectedDirective } from './protected.directive';
+import { LoginComponent } from './login/login.component';
+import {AuthService} from "./auth.service";
+import { LandingComponent } from './landing/landing.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -22,9 +28,11 @@ const firebaseAuthConfig = {
 @NgModule({
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+    AppRoutingModule
   ],
-  declarations: [ AppComponent, LoginRouterOutletComponent ],
+  declarations: [ AppComponent, LoginRouterOutletComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
+  providers: [AuthService],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

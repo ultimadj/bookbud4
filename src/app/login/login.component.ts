@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFire} from "angularfire2";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -8,10 +7,14 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  constructor(private af:AngularFire, private router:Router) {
+  loginState: {};
+
+  constructor(private af:AngularFire) {
     af.auth.subscribe((auth) => {
         if(auth) {
-          router.navigate(['/'])
+          this.loginState = {loggedIn: true}
+        } else {
+          this.loginState = {loggedOut: true}
         }
     })
   }

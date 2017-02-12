@@ -7,7 +7,6 @@ import {AppRoutingModule} from "./app-routing.module";
 import { BookComponent } from './book/book.component';
 import { ProtectedDirective } from './protected.directive';
 import { LoginComponent } from './login/login.component';
-import {AuthService} from "./auth.service";
 import { LandingComponent } from './landing/landing.component';
 
 // Must export the config
@@ -32,7 +31,6 @@ const firebaseAuthConfig = {
     AppRoutingModule
   ],
   declarations: [ AppComponent, LoginRouterOutletComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
-  providers: [AuthService],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

@@ -1,11 +1,16 @@
-<div *ngIf="display.loading">Loading...</div>
-<div *ngIf="display.showLogout">
-  <div style="display: none"> {{ (af.auth | async)?.uid }} </div>
-  <nav>
-    <a [routerLink]="['/']">Home</a>
-    <button (click)="logout()">Logout</button>
+<div class="container">
+  <nav class="navbar navbar-default">
+    <div *ngIf="display.loading" class="loading">Loading...</div>
+    <div *ngIf="display.showLogout">
+      <div style="display: none"> {{ (af.auth | async)?.uid }}</div>
+      <ul class="nav navbar-nav">
+        <li><a [routerLink]="['/']">Home</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/book']">Books</a></li>
+      </ul>
+      <button class="btn btn-primary pull-right" (click)="logout()">Logout</button>
+    </div>
+    <div *ngIf="display.showLogin">
+      <button class="btn btn-primary pull-right" (click)="login()">Login</button>
+    </div>
   </nav>
-</div>
-<div *ngIf="display.showLogin">
-  <button (click)="login()">Login</button>
 </div>

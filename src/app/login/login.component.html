@@ -1,6 +1,10 @@
-<p *ngIf="loginState.loggedOut">
-  Please login
-</p>
-<p *ngIf="loginState.loggedIn">
-  You're logged in. Get started: <a [routerLink]="['/book']">Books</a>
-</p>
+<div class="container">
+  <p *ngIf="loginState?.loggedOut">
+    You're not logged in!<br>
+    Please click the 'Login' button in the upper-right.
+  </p>
+  <p *ngIf="loginState?.loggedIn">
+    You're logged in! <br>
+    Get started: <a [routerLink]="['/book']">Books</a>
+  </p>
+</div>

@@ -14,7 +14,7 @@
     <!-- sidenav content -->
     <span>{{userService?.currentUser?.displayName || 'Anonymous'}}</span>
     <hr>
-    <button md-button routerLink="/" (click)="sidenav.close()">Dashboard</button>
+    <button md-button routerLink="/" routerLinkActive="current-route" (click)="sidenav.close()">Dashboard</button>
     <button md-button routerLink="/book" routerLinkActive="current-route" (click)="sidenav.close()">Books</button>
 
   </md-sidenav>

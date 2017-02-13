@@ -3,10 +3,8 @@ import {AngularFire} from 'angularfire2';
 
 @Component({
   selector: 'app-root',
-  template: `
-<app-login-router-outlet></app-login-router-outlet>
-<router-outlet></router-outlet>
-  `,
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
 }

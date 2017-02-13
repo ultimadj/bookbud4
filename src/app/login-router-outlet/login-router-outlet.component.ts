@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AngularFire} from "angularfire2";
 import {UserService} from "../user.service";
 
+// Deprecated
 @Component({
   selector: 'app-login-router-outlet',
   templateUrl: './login-router-outlet.component.html',

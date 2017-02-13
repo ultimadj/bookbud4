@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {AngularFireModule, AuthProviders, AuthMethods} from 'angularfire2';
-import { LoginRouterOutletComponent } from './login-router-outlet/login-router-outlet.component';
 import {AppRoutingModule} from "./app-routing.module";
 import { BookComponent } from './book/book.component';
 import { ProtectedDirective } from './protected.directive';
@@ -34,7 +33,7 @@ const firebaseAuthConfig = {
     AppRoutingModule,
     MaterialModule.forRoot()
   ],
-  declarations: [ AppComponent, LoginRouterOutletComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
+  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
   providers: [UserService],
   bootstrap: [ AppComponent ]
 })

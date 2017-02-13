@@ -10,13 +10,12 @@
     <button *ngIf="display.showLogout" md-button (click)="logout()" id="logout">Logout</button>
     <button *ngIf="display.showLogin" md-button (click)="login()" id="login">Login</button>
   </md-toolbar>
-  <md-sidenav #sidenav mode="side">
-    <!-- sidenav content -->
+
+  <md-sidenav #sidenav mode="over">
     <span>{{userService?.currentUser?.displayName || 'Anonymous'}}</span>
     <hr>
-    <button md-button routerLink="/" routerLinkActive="current-route" (click)="sidenav.close()">Dashboard</button>
+    <button md-button routerLink="/dashboard" routerLinkActive="current-route" (click)="sidenav.close()">Dashboard</button>
     <button md-button routerLink="/book" routerLinkActive="current-route" (click)="sidenav.close()">Books</button>
-
   </md-sidenav>
 
   <!-- primary content -->

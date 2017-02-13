@@ -1,7 +1,11 @@
 <div appProtected class="container">
   <div class="clearfix"></div>
   <h2>{{title}}</h2>
-  <form>
 
-  </form>
+  <md-input-container>
+    <input md-input [(ngModel)]="title" placeholder="Title">
+  </md-input-container><br>
+  <md-input-container>
+    <input md-input [(ngModel)]="isbn" placeholder="ISBN">
+  </md-input-container>
 </div>

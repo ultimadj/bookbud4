@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookComponent implements OnInit {
   title = "First Book";
+  isbn = "123456789";
 
   constructor() { }
 

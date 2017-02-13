@@ -10,6 +10,7 @@ import { LandingComponent } from './landing/landing.component';
 import {UserService} from "./user.service";
 import {MaterialModule} from "@angular/material";
 import 'hammerjs';
+import {FormsModule} from "@angular/forms";
 
 // Must export the config
 export const firebaseConfig = {
@@ -29,6 +30,7 @@ const firebaseAuthConfig = {
 @NgModule({
   imports: [
     BrowserModule,
+    FormsModule,
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     AppRoutingModule,
     MaterialModule.forRoot()

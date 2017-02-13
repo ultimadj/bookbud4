@@ -11,7 +11,7 @@
     "e2e": "protractor",
     "fblogin": "firebase login",
     "fbinit": "firebase init",
-    "fbdeploy": "ng build && firebase deploy"
+    "fbdeploy": "ng build --prod && firebase deploy"
   },
   "private": true,
   "dependencies": {

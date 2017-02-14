@@ -3,10 +3,11 @@
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
 
 ### Core Projects
-- https://github.com/angular/quickstart
-- https://github.com/angular/angularfire2
-- https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
-- https://juristr.com/blog/2016/02/debugging-angular2-console/
+- Firebase: https://firebase.google.com/
+- Firebase for Angular2: https://github.com/angular/angularfire2
+- Barcode scanner: https://github.com/serratus/quaggaJS
+- cli: https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
+- Debug tips: https://juristr.com/blog/2016/02/debugging-angular2-console/
 
 ### Visual Styles
 - Icons: https://material.io/icons

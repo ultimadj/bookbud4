@@ -11,21 +11,28 @@ import {Book} from "../book";
 export class BookComponent {
   book:Book;
   bookFb:FirebaseObjectObservable<any>;
+  bookFbSub:any;
 
   constructor(private uds:UserAwareDataService) {
     this.book = new Book();
     uds.readiness.subscribe((ready) => {
       if(ready) {
-        this.readData();
+        this.subscribeToData();
+      } else {
+        this.clearSubscription();
       }
     });
   }
 
-  private readData() {
+  private clearSubscription() {
+    this.bookFb = null;
+    if(this.bookFbSub) this.bookFbSub.unsubscribe();
+  }
+  private subscribeToData() {
     if(this.bookFb) return;
 
     this.bookFb = this.uds.userObject("fakebook");
-    this.bookFb.subscribe((bookHolder) => {
+    this.bookFbSub = this.bookFb.subscribe((bookHolder) => {
       if(bookHolder.book) {
         this.book = bookHolder.book;
         console.log("Book updated.", bookHolder);

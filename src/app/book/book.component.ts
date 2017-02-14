@@ -37,7 +37,7 @@ export class BookComponent {
         this.book = bookHolder.book;
         console.log("Book updated.", bookHolder);
       } else {
-        console.log("Book is empty. Danger!");
+        console.log("Book is empty. Starting with a blank.");
       }
     });
   }

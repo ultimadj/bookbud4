@@ -1,11 +1,12 @@
 <div appProtected class="container">
   <div class="clearfix"></div>
-  <h2>{{title}}</h2>
+  <h2>{{book.title}}</h2>
 
   <md-input-container>
-    <input md-input [(ngModel)]="title" placeholder="Title">
+    <input md-input [(ngModel)]="book.title" placeholder="Title">
   </md-input-container><br>
   <md-input-container>
-    <input md-input [(ngModel)]="isbn" placeholder="ISBN">
+    <input md-input [(ngModel)]="book.isbn" placeholder="ISBN">
   </md-input-container>
+  <button md-button (click)="save()">Save</button>
 </div>

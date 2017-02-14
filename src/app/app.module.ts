@@ -11,6 +11,7 @@ import {UserService} from "./user.service";
 import {MaterialModule} from "@angular/material";
 import 'hammerjs';
 import {FormsModule} from "@angular/forms";
+import {UserAwareDataService} from "./user-aware-data.service";
 
 // Must export the config
 export const firebaseConfig = {
@@ -36,7 +37,7 @@ const firebaseAuthConfig = {
     MaterialModule.forRoot()
   ],
   declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
-  providers: [UserService],
+  providers: [UserService, UserAwareDataService],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

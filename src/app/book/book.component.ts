@@ -45,6 +45,14 @@ export class BookComponent implements OnDestroy, OnInit {
     });
   }
 
+  browseIsbn() {
+
+  }
+
+  scanIsbn() {
+
+  }
+
   save() {
     this.bookFb.set({book: this.book});
   }

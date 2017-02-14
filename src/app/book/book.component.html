@@ -4,9 +4,18 @@
   <md-input-container>
     <input md-input [(ngModel)]="book.title" placeholder="Title">
   </md-input-container><br>
+
   <md-input-container>
     <input md-input [(ngModel)]="book.isbn" placeholder="ISBN">
-  </md-input-container><br>
+  </md-input-container>
+  <label for="barcodeUpload">
+    <a md-icon-button><md-icon>file_upload</md-icon></a>
+  </label>
+  <input type="file" id="barcodeUpload" style="display: none">
+  <button md-icon-button (click)="scanIsbn()"><md-icon>photo</md-icon></button>
+  <p>NOTE: isbn image upload and barcode scanner coming soon.</p>
+
+  <div class="actions">
   <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button>
-  <br>
+  </div>
 </div>

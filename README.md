@@ -9,9 +9,9 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 - https://juristr.com/blog/2016/02/debugging-angular2-console/
 
 ### Visual Styles
-- https://material.io/icons
-- https://material.angular.io/components
-- TODO: Continue here: https://github.com/jelbourn/material2-app
+- Icons: https://material.io/icons
+- Components: https://material.angular.io/components
+- Material reference app: https://github.com/jelbourn/material2-app
 
 ### Tools
 
@@ -22,6 +22,10 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 
 ### Deployment
 Run fb* (see packages.json).
+
+    npm run fbdeploy
+
+# Angular CLI Tips
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -42,10 +46,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to GitHub Pages
-
-Run `ng github-pages:deploy` to deploy to GitHub Pages.
 
 ## Further help
 

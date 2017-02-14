@@ -1,5 +1,4 @@
-<div appProtected class="container">
-  <div class="clearfix"></div>
+<div appProtected>
   <h2>{{book.title}}</h2>
 
   <md-input-container>
@@ -8,5 +7,6 @@
   <md-input-container>
     <input md-input [(ngModel)]="book.isbn" placeholder="ISBN">
   </md-input-container><br>
-  <button md-button (click)="save()">Save</button>
+  <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button>
+  <br>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {UserAwareDataService} from "../user-aware-data.service";
 import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
@@ -8,14 +8,19 @@ import {Book} from "../book";
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css']
 })
-export class BookComponent {
+export class BookComponent implements OnDestroy, OnInit {
   book:Book;
   bookFb:FirebaseObjectObservable<any>;
   bookFbSub:any;
 
   constructor(private uds:UserAwareDataService) {
     this.book = new Book();
-    uds.readiness.subscribe((ready) => {
+  }
+  ngOnDestroy(): void {
+    this.clearSubscription();
+  }
+  ngOnInit(): void {
+    this.uds.readiness.subscribe((ready) => {
       if(ready) {
         this.subscribeToData();
       } else {
@@ -36,8 +41,6 @@ export class BookComponent {
       if(bookHolder.book) {
         this.book = bookHolder.book;
         console.log("Book updated.", bookHolder);
-      } else {
-        console.log("Book is empty. Starting with a blank.");
       }
     });
   }

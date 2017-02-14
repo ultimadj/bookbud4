@@ -4,7 +4,18 @@
 }
 
 md-sidenav-container {
-  min-height: 400px;
+  background-color: white;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .content-wrapper {
+    display: flex;
+    flex: 1;
+  }
 }
 
 md-sidenav {
@@ -25,4 +36,8 @@ md-sidenav {
 
 .current-route {
   background-color: darkgray;
+}
+
+.footer {
+  text-align: center;
 }

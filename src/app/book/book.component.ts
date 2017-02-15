@@ -3,6 +3,7 @@ import {Component, OnInit, OnDestroy, NgZone, ViewChild} from '@angular/core';
 import {UserAwareDataService} from "../user-aware-data.service";
 import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
+import {IsbndbService} from "../isbndb.service";
 // import {QuaggaJSConfigObject} from "quagga/type-definitions/quagga";
 
 declare var Quagga: any;
@@ -30,7 +31,7 @@ export class BookComponent implements OnDestroy, OnInit {
   @ViewChild('isbninput') isbnInputElement;
   waitingToDecode:boolean;
 
-  constructor(private uds:UserAwareDataService, private _ngZone: NgZone) {
+  constructor(private uds:UserAwareDataService, private isbnService:IsbndbService, private _ngZone: NgZone) {
     window.bookComponentRef = {component: this, zone: _ngZone};
     this.waitingToDecode = false;
     this.book = new Book();
@@ -74,23 +75,23 @@ export class BookComponent implements OnDestroy, OnInit {
   triggerIsbnDecode(event) {
     var files = event.srcElement.files;
     this.state.src = URL.createObjectURL(files[0]);
-    this.isbnContainerElement.dividerColor = "primary"; // Clear warning state
     this.waitingToDecode = true;
-    Quagga.decodeSingle(this.state, window.bookComponentRef.component.handleCodeUpdateFromExternalCall);
+    Quagga.decodeSingle(this.state, window.bookComponentRef.component.inductCodeUpdateRequest);
   }
   // Get back into the angular ecosystem and delegate the handling of the updated result
-  public handleCodeUpdateFromExternalCall(result) {
+  public inductCodeUpdateRequest(result) {
     window.bookComponentRef.zone.run(() => {
       window.bookComponentRef.component.handleCodeUpdate(result);
     });
   }
   // Handle the decode result
   public handleCodeUpdate(result) {
+    this.isbnContainerElement.dividerColor = "primary"; // Clear warning state
     this.waitingToDecode = false;
     console.log("Quagga scan result", result);
     if(result && result.codeResult && result.codeResult.code) {
       this.book.isbn = result.codeResult.code;
-      this.uds.queueIsbnRequest(this.book.isbn); // TODO: subscribe to result
+      this.isbnService.isbnSearch(this.book.isbn).subscribe((result) => {});
     } else {
       console.log("No coderesult. ISBN was not read.");
       this.isbnContainerElement.dividerColor = "warn";

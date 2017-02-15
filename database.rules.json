@@ -5,17 +5,6 @@
         ".read": "$uid === auth.uid",
         ".write": "$uid === auth.uid"
       }
-    },
-    "isbn": {
-      ".read": "auth != null"
-    },
-    "queue": {
-      "isbnRequest": {
-        "$uid": {
-          ".read": "$uid === auth.uid",
-          ".write": "$uid === auth.uid"
-        }
-      }
     }
   }
 }

@@ -6,8 +6,13 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 - Firebase: https://firebase.google.com/
 - Firebase for Angular2: https://github.com/angular/angularfire2
 - Barcode scanner: https://github.com/serratus/quaggaJS
+- ISBN reader: https://github.com/abdmob/x2js
 - cli: https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
 - Debug tips: https://juristr.com/blog/2016/02/debugging-angular2-console/
+
+### ISBNdb.com
+- Nothing: http://isbndb.com/api/books.xml?access_key=HS839S6N&index1=isbn&value1=9780794534721
+- Something: http://isbndb.com/api/books.xml?access_key=HS839S6N&index1=isbn&value1=9780794513856
 
 ### Visual Styles
 - Icons: https://material.io/icons

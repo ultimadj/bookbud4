@@ -25,13 +25,13 @@ export class UserAwareDataService {
     return this.afd.object(`/users/${this.us.currentUser.uid}/${context}`);
   }
 
-  queueIsbnRequest(isbn: string): FirebaseObjectObservable<any> {
-    if(!this.dataReady) {
-      console.log("Not ready: queueIsbnRequest");
-    }
-    let path = `/queue/isbnRequest/${this.us.currentUser.uid}/${isbn}`;
-    console.log("queued isbn request to: " + path);
-    this.afd.object(path).set({user: this.us.currentUser.uid, isbn: isbn});
-    return this.afd.object(`/isbn/${isbn}`);
-  }
+  // queueIsbnRequest(isbn: string): FirebaseObjectObservable<any> {
+  //   if(!this.dataReady) {
+  //     console.log("Not ready: queueIsbnRequest");
+  //   }
+  //   let path = `/queue/isbnRequest/${this.us.currentUser.uid}/${isbn}`;
+  //   console.log("queued isbn request to: " + path);
+  //   this.afd.object(path).set({user: this.us.currentUser.uid, isbn: isbn});
+  //   return this.afd.object(`/isbn/${isbn}`);
+  // }
 }

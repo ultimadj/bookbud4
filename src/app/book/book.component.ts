@@ -1,10 +1,18 @@
 /// <reference path="../../../\node_modules\quagga\type-definitions\quagga.d.ts" />
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, NgZone} from '@angular/core';
 import {UserAwareDataService} from "../user-aware-data.service";
 import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
 // import {QuaggaJSConfigObject} from "quagga/type-definitions/quagga";
 
+declare var Quagga: any;
+declare var window:any;
+
+/*
+ https://serratus.github.io/quaggaJS/examples/file_input.js
+ https://github.com/gelliott181/ng2-quagga-issue/blob/master/src/app/app.component.ts
+ http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
+ */
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
@@ -16,7 +24,8 @@ export class BookComponent implements OnDestroy, OnInit {
   bookFbSub:any;
   state:any;
 
-  constructor(private uds:UserAwareDataService) {
+  constructor(private uds:UserAwareDataService, private _ngZone: NgZone) {
+    window.bookComponentRef = {component: this, zone: _ngZone};
     this.book = new Book();
 
     this.state =
@@ -31,7 +40,7 @@ export class BookComponent implements OnDestroy, OnInit {
         numOfWorkers: 1,
         decoder: {
           readers: [{
-            format: "code_128_reader",
+            format: "ean_reader",
             config: {}
           }]
         },
@@ -41,6 +50,7 @@ export class BookComponent implements OnDestroy, OnInit {
   }
   ngOnDestroy(): void {
     this.clearSubscription();
+    window.bookComponentRef = null;
   }
   ngOnInit(): void {
     this.uds.readiness.subscribe((ready) => {
@@ -50,9 +60,28 @@ export class BookComponent implements OnDestroy, OnInit {
         this.clearSubscription();
       }
     });
+  }
 
-    // https://serratus.github.io/quaggaJS/examples/file_input.js
-    // https://github.com/gelliott181/ng2-quagga-issue/blob/master/src/app/app.component.ts
+  // Handle the event, and start Quagga working on decoding it
+  triggerIsbnDecode(event) {
+    var files = event.srcElement.files;
+    this.state.src = URL.createObjectURL(files[0]);
+    Quagga.decodeSingle(this.state, window.bookComponentRef.component.handleCodeUpdateFromExternalCall);
+  }
+  // Get back into the angular ecosystem and delegate the handling of the updated result
+  public handleCodeUpdateFromExternalCall(result) {
+    window.bookComponentRef.zone.run(() => {
+      window.bookComponentRef.component.handleCodeUpdate(result);
+    });
+  }
+  // Handle the decode result
+  public handleCodeUpdate(result) {
+    console.log("Quagga scan result", result);
+    if(result.codeResult && result.codeResult.code) {
+      this.book.isbn = result.codeResult.code
+    } else {
+      console.log("No coderesult. ISBN was not read.")
+    }
   }
 
   private clearSubscription() {
@@ -69,11 +98,6 @@ export class BookComponent implements OnDestroy, OnInit {
         console.log("Book updated.", bookHolder);
       }
     });
-  }
-
-  decodeIsbn(event) {
-    var files = event.srcElement.files;
-    console.log(files);
   }
 
   save() {

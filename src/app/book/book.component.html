@@ -11,7 +11,8 @@
   <label for="barcodeUpload">
     <a md-icon-button><md-icon>file_upload</md-icon></a>
   </label>
-  <input type="file" id="barcodeUpload" style="display: none" (change)="decodeIsbn($event)">
+  <!--reset the value on click, let change fire decode-->
+  <input type="file" id="barcodeUpload" style="display: none" (click)="$event.target.value = null;" (change)="triggerIsbnDecode($event)">
 
   <div class="actions">
   <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button>

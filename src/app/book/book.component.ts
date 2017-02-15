@@ -1,5 +1,5 @@
 /// <reference path="../../../\node_modules\quagga\type-definitions\quagga.d.ts" />
-import {Component, OnInit, OnDestroy, NgZone} from '@angular/core';
+import {Component, OnInit, OnDestroy, NgZone, ViewChild} from '@angular/core';
 import {UserAwareDataService} from "../user-aware-data.service";
 import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
@@ -12,6 +12,8 @@ declare var window:any;
  https://serratus.github.io/quaggaJS/examples/file_input.js
  https://github.com/gelliott181/ng2-quagga-issue/blob/master/src/app/app.component.ts
  http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
+
+ http://stackoverflow.com/questions/32693061/angular-2-typescript-get-hold-of-an-element-in-the-template
  */
 @Component({
   selector: 'app-book',
@@ -23,9 +25,13 @@ export class BookComponent implements OnDestroy, OnInit {
   bookFb:FirebaseObjectObservable<any>;
   bookFbSub:any;
   state:any;
+  @ViewChild('isbncontainer') isbnContainerElement;
+  @ViewChild('isbninput') isbnInputElement;
+  waitingToDecode:boolean;
 
   constructor(private uds:UserAwareDataService, private _ngZone: NgZone) {
     window.bookComponentRef = {component: this, zone: _ngZone};
+    this.waitingToDecode = false;
     this.book = new Book();
 
     this.state =
@@ -66,6 +72,8 @@ export class BookComponent implements OnDestroy, OnInit {
   triggerIsbnDecode(event) {
     var files = event.srcElement.files;
     this.state.src = URL.createObjectURL(files[0]);
+    this.isbnContainerElement.dividerColor = "primary"; // Clear warning state
+    this.waitingToDecode = true;
     Quagga.decodeSingle(this.state, window.bookComponentRef.component.handleCodeUpdateFromExternalCall);
   }
   // Get back into the angular ecosystem and delegate the handling of the updated result
@@ -76,12 +84,16 @@ export class BookComponent implements OnDestroy, OnInit {
   }
   // Handle the decode result
   public handleCodeUpdate(result) {
+    this.waitingToDecode = false;
     console.log("Quagga scan result", result);
-    if(result.codeResult && result.codeResult.code) {
-      this.book.isbn = result.codeResult.code
+    if(result && result.codeResult && result.codeResult.code) {
+      this.book.isbn = result.codeResult.code;
     } else {
-      console.log("No coderesult. ISBN was not read.")
+      console.log("No coderesult. ISBN was not read.");
+      this.isbnContainerElement.dividerColor = "warn";
     }
+    console.log("isbnInputElement", this.isbnInputElement);
+    this.isbnInputElement.nativeElement.focus();
   }
 
   private clearSubscription() {

@@ -1,3 +1,9 @@
 .actions {
   margin: 10px 0;
 }
+
+.waiting-for-isbn {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+}

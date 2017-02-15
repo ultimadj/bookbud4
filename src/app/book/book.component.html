@@ -5,14 +5,16 @@
     <input md-input [(ngModel)]="book.title" placeholder="Title">
   </md-input-container><br>
 
-  <md-input-container>
-    <input md-input [(ngModel)]="book.isbn" placeholder="ISBN">
+  <md-input-container #isbncontainer>
+    <input md-input [(ngModel)]="book.isbn" placeholder="ISBN" #isbninput>
   </md-input-container>
   <label for="barcodeUpload">
     <a md-icon-button><md-icon>file_upload</md-icon></a>
   </label>
+  <md-spinner class="waiting-for-isbn" *ngIf="waitingToDecode"></md-spinner>
   <!--reset the value on click, let change fire decode-->
   <input type="file" id="barcodeUpload" style="display: none" (click)="$event.target.value = null;" (change)="triggerIsbnDecode($event)">
+
 
   <div class="actions">
   <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button>

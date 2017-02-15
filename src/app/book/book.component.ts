@@ -21,6 +21,7 @@ declare var window:any;
   styleUrls: ['./book.component.css']
 })
 export class BookComponent implements OnDestroy, OnInit {
+  bookPrevious:Book;
   book:Book;
   bookFb:FirebaseObjectObservable<any>;
   bookFbSub:any;
@@ -33,6 +34,7 @@ export class BookComponent implements OnDestroy, OnInit {
     window.bookComponentRef = {component: this, zone: _ngZone};
     this.waitingToDecode = false;
     this.book = new Book();
+    this.bookPrevious = Object.assign({},this.book);
 
     this.state =
       {
@@ -88,6 +90,7 @@ export class BookComponent implements OnDestroy, OnInit {
     console.log("Quagga scan result", result);
     if(result && result.codeResult && result.codeResult.code) {
       this.book.isbn = result.codeResult.code;
+      this.uds.queueIsbnRequest(this.book.isbn); // TODO: subscribe to result
     } else {
       console.log("No coderesult. ISBN was not read.");
       this.isbnContainerElement.dividerColor = "warn";
@@ -107,6 +110,7 @@ export class BookComponent implements OnDestroy, OnInit {
     this.bookFbSub = this.bookFb.subscribe((bookHolder) => {
       if(bookHolder.book) {
         this.book = bookHolder.book;
+        this.bookPrevious = Object.assign({},this.book);
         console.log("Book updated.", bookHolder);
       }
     });
@@ -114,5 +118,9 @@ export class BookComponent implements OnDestroy, OnInit {
 
   save() {
     this.bookFb.set({book: this.book});
+  }
+
+  cancel() {
+    this.book = this.bookPrevious;
   }
 }

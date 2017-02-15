@@ -11,7 +11,7 @@
   <label for="barcodeUpload">
     <a md-icon-button><md-icon>file_upload</md-icon></a>
   </label>
-  <input type="file" id="barcodeUpload" style="display: none">
+  <input type="file" id="barcodeUpload" style="display: none" (change)="decodeIsbn($event)">
 
   <div class="actions">
   <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button>

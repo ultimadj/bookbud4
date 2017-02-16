@@ -5,6 +5,7 @@ import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
 import {IsbndbService} from "../isbndb.service";
 import {IsbnSearchResult} from "../isbn-search-result";
+import {Subscription} from "rxjs";
 // import {QuaggaJSConfigObject} from "quagga/type-definitions/quagga";
 
 declare var Quagga: any;
@@ -23,14 +24,16 @@ declare var window:any;
   styleUrls: ['./book.component.css']
 })
 export class BookComponent implements OnDestroy, OnInit {
+  key:string = "fakebook";
+
   bookPrevious:Book;
   book:Book;
-  bookFb:FirebaseObjectObservable<any>;
-  bookFbSub:any;
-  state:any;
+  bookFbSub:Subscription;
+
+  quaggaStateTemplate:any;
+  waitingToDecode:boolean;
   @ViewChild('isbncontainer') isbnContainerElement;
   @ViewChild('isbninput') isbnInputElement;
-  waitingToDecode:boolean;
 
   constructor(private uds:UserAwareDataService, private isbnService:IsbndbService, private _ngZone: NgZone) {
     window.bookComponentRef = {component: this, zone: _ngZone};
@@ -38,7 +41,10 @@ export class BookComponent implements OnDestroy, OnInit {
     this.book = new Book();
     this.bookPrevious = Object.assign({},this.book);
 
-    this.state =
+    /*
+    Quagga barcode scanner settings
+     */
+    this.quaggaStateTemplate =
       {
         inputStream: {
           size: 800
@@ -59,25 +65,27 @@ export class BookComponent implements OnDestroy, OnInit {
       };
   }
   ngOnDestroy(): void {
-    this.clearSubscription();
+    if(this.bookFbSub) this.bookFbSub.unsubscribe();
     window.bookComponentRef = null;
   }
   ngOnInit(): void {
-    this.uds.readiness.subscribe((ready) => {
-      if(ready) {
-        this.subscribeToData();
-      } else {
-        this.clearSubscription();
+    this.bookFbSub = this.uds.userObject(this.key).switch().subscribe((book) => {
+      if(!book.$exists()) {
+        console.log("Book was deleted from firebase. Leaving UI state alone.");
       }
+      this.book = Object.assign({}, book);
+      this.bookPrevious = Object.assign({}, this.book);
+      console.log("Book updated.", this.book);
     });
   }
 
-  // Handle the event, and start Quagga working on decoding it
+
+  // Handle the barcode scan event and start Quagga to decode it
   triggerIsbnDecode(event) {
-    var files = event.srcElement.files;
-    this.state.src = URL.createObjectURL(files[0]);
+    let files = event.srcElement.files;
+    let state = Object.assign({}, this.quaggaStateTemplate, {src: URL.createObjectURL(files[0])});
     this.waitingToDecode = true;
-    Quagga.decodeSingle(this.state, window.bookComponentRef.component.inductCodeUpdateRequest);
+    Quagga.decodeSingle(state, window.bookComponentRef.component.inductCodeUpdateRequest);
   }
   // Get back into the angular ecosystem and delegate the handling of the updated result
   public inductCodeUpdateRequest(result) {
@@ -89,9 +97,15 @@ export class BookComponent implements OnDestroy, OnInit {
   public handleCodeUpdate(result) {
     this.isbnContainerElement.dividerColor = "primary"; // Clear warning state
     console.log("Quagga scan result", result);
-    if(result && result.codeResult && result.codeResult.code) {
+    if(this.codeReturned(result)) {
       this.book.isbn = result.codeResult.code;
-      this.isbnService.isbnSearch(this.book.isbn).subscribe((result:IsbnSearchResult) => {
+
+      // Subscribe to updates til we've received something saying we got a result or an error
+      this.isbnService.isbnSearch(this.book.isbn).takeWhile((v, i) => (this.waitingToDecode)).subscribe((result:IsbnSearchResult) => {
+        if(!result.searched) {
+          console.log("Search started, but no response yet.");
+          return;
+        }
         if(result.found) {
           this.book.title = result.title;
         } else {
@@ -104,31 +118,20 @@ export class BookComponent implements OnDestroy, OnInit {
       this.isbnContainerElement.dividerColor = "warn";
       this.waitingToDecode = false;
     }
+
+    // Focus the ISBN input (target of this process)
     console.log("isbnInputElement", this.isbnInputElement);
     this.isbnInputElement.nativeElement.focus();
   }
 
-  private clearSubscription() {
-    this.bookFb = null;
-    if(this.bookFbSub) this.bookFbSub.unsubscribe();
-  }
-  private subscribeToData() {
-    if(this.bookFb) return;
-
-    this.bookFb = this.uds.userObject("fakebook");
-    this.bookFbSub = this.bookFb.subscribe((bookHolder) => {
-      if(bookHolder.book) {
-        this.book = bookHolder.book;
-        this.bookPrevious = Object.assign({},this.book);
-        console.log("Book updated.", bookHolder);
-      }
-    });
+  private codeReturned(result) {
+    return result && result.codeResult && result.codeResult.code;
   }
 
   save() {
-    this.bookFb.set({book: this.book});
+    console.log("Save", this.book);
+    this.uds.save(this.key, this.book);
   }
-
   cancel() {
     this.book = Object.assign({}, this.bookPrevious);
   }

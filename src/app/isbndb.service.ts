@@ -12,7 +12,7 @@ export class IsbndbService {
 
   isbnSearch(isbn:string): Observable<IsbnSearchResult> {
     let path = `isbn/${isbn}`;
-    return this.uds.userObject(path)
+    return this.uds.userObject(path).switch()
       .map((isbnSearchResult:IsbnSearchResult) => {
         if(isbnSearchResult.searched) {
           console.log("isbn search cache hit", isbnSearchResult);
@@ -20,7 +20,7 @@ export class IsbndbService {
         }
         console.log(`No result for isbn ${isbn}. Requesting search.`);
         this.isbnSearchIsbndb(isbn, path);
-        return null;
+        return new IsbnSearchResult()
       });
   }
   private processIsbnResult(isbnSearchResult:IsbnSearchResult): IsbnSearchResult {
@@ -55,7 +55,7 @@ export class IsbndbService {
         searchResult.searched = true;
 
       console.log("Setting search result", searchResult);
-      this.uds.userObject(path).set(searchResult);
+      this.uds.save(path, searchResult);
     });
   }
 }

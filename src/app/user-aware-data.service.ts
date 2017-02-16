@@ -2,36 +2,29 @@ import { Injectable } from '@angular/core';
 import {UserService} from "./user.service";
 import {AngularFireDatabase, FirebaseObjectObservable} from "angularfire2";
 import {Observable} from "rxjs";
+import User = firebase.User;
 
 @Injectable()
 export class UserAwareDataService {
-  dataReady:boolean;
-  readiness:Observable<boolean>;
+  uid:string;
 
-  constructor(private afd: AngularFireDatabase, private us: UserService) {
-    this.dataReady = us.currentUser != null;
-    this.readiness = Observable.create((observer) => {
-      us.user.subscribe((user) => {
-        this.dataReady = us.currentUser != null;
-        observer.next(this.dataReady);
-      });
+  constructor(private afd: AngularFireDatabase, private us: UserService) {}
+
+  userObject(context: string): Observable<FirebaseObjectObservable<any>> {
+    return this.us.user.map((user:User) => {
+      this.uid = user.uid;
+      return this.afd.object(`/users/${this.uid}/${context}`, {preserveSnapshot: false});
     });
   }
 
-  userObject(context: string): FirebaseObjectObservable<any> {
-    if(!this.dataReady) {
-      console.log("Data requested before available.");
-    }
-    return this.afd.object(`/users/${this.us.currentUser.uid}/${context}`);
+  save(context: string, data:any) {
+    this.afd.object(`/users/${this.uid}/${context}`).set(this.strip(data));
   }
 
-  // queueIsbnRequest(isbn: string): FirebaseObjectObservable<any> {
-  //   if(!this.dataReady) {
-  //     console.log("Not ready: queueIsbnRequest");
-  //   }
-  //   let path = `/queue/isbnRequest/${this.us.currentUser.uid}/${isbn}`;
-  //   console.log("queued isbn request to: " + path);
-  //   this.afd.object(path).set({user: this.us.currentUser.uid, isbn: isbn});
-  //   return this.afd.object(`/isbn/${isbn}`);
-  // }
+  strip(context: any) {
+    delete context.$key;
+    delete context.$value;
+    delete context.$exists;
+    return context;
+  }
 }

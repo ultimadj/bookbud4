@@ -36,7 +36,9 @@ export class BookComponent implements OnDestroy, OnInit {
   @ViewChild('isbninput') isbnInputElement;
 
   constructor(private uds:UserAwareDataService, private isbnService:IsbndbService, private _ngZone: NgZone) {
+    //http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
     window.bookComponentRef = {component: this, zone: _ngZone};
+
     this.waitingToDecode = false;
     this.book = new Book();
     this.bookPrevious = Object.assign({},this.book);

@@ -13,6 +13,7 @@ import 'hammerjs';
 import {FormsModule} from "@angular/forms";
 import {UserAwareDataService} from "./user-aware-data.service";
 import {IsbndbService} from "./isbndb.service";
+import { AddContentComponent } from './add-content/add-content.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -37,7 +38,7 @@ const firebaseAuthConfig = {
     AppRoutingModule,
     MaterialModule.forRoot()
   ],
-  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent ],
+  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent, AddContentComponent ],
   providers: [UserService, UserAwareDataService, IsbndbService],
   bootstrap: [ AppComponent ]
 })

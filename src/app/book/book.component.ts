@@ -4,6 +4,7 @@ import {UserAwareDataService} from "../user-aware-data.service";
 import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
 import {IsbndbService} from "../isbndb.service";
+import {IsbnSearchResult} from "../isbn-search-result";
 // import {QuaggaJSConfigObject} from "quagga/type-definitions/quagga";
 
 declare var Quagga: any;
@@ -87,14 +88,21 @@ export class BookComponent implements OnDestroy, OnInit {
   // Handle the decode result
   public handleCodeUpdate(result) {
     this.isbnContainerElement.dividerColor = "primary"; // Clear warning state
-    this.waitingToDecode = false;
     console.log("Quagga scan result", result);
     if(result && result.codeResult && result.codeResult.code) {
       this.book.isbn = result.codeResult.code;
-      this.isbnService.isbnSearch(this.book.isbn).subscribe((result) => {});
+      this.isbnService.isbnSearch(this.book.isbn).subscribe((result:IsbnSearchResult) => {
+        if(result.found) {
+          this.book.title = result.title;
+        } else {
+          this.isbnContainerElement.dividerColor = "warn";
+        }
+        this.waitingToDecode = false;
+      });
     } else {
       console.log("No coderesult. ISBN was not read.");
       this.isbnContainerElement.dividerColor = "warn";
+      this.waitingToDecode = false;
     }
     console.log("isbnInputElement", this.isbnInputElement);
     this.isbnInputElement.nativeElement.focus();
@@ -122,6 +130,6 @@ export class BookComponent implements OnDestroy, OnInit {
   }
 
   cancel() {
-    this.book = this.bookPrevious;
+    this.book = Object.assign({}, this.bookPrevious);
   }
 }

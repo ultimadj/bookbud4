@@ -1,0 +1,57 @@
+{
+  "query": {
+    "count": 1,
+    "created": "2017-02-16T01:56:58Z",
+    "lang": "en-US",
+    "results": {
+      "json": {
+        "data": {
+          "book_id": "stories_of_princesses_combined_volume",
+          "dewey_decimal": "398.2",
+          "title_long": "Stories of Princesses: Combined Volume (Young Reading Series 1 Gift Books)",
+          "publisher_id": "usborne_books",
+          "urls_text": "",
+          "author_data": [
+            {
+              "name": "Helbrough, Emma",
+              "id": "helbrough_emma"
+            },
+            {
+              "id": "sims_lesley",
+              "name": "Sims, Lesley"
+            },
+            {
+              "name": "Gordon, Mike",
+              "id": "gordon_mike"
+            },
+            {
+              "id": "anna_luraschi",
+              "name": "Anna Luraschi"
+            }
+          ],
+          "notes": "",
+          "awards_text": "",
+          "language": "",
+          "isbn10": "0794513859",
+          "title": "Stories of Princesses: Combined Volume",
+          "lcc_number": "",
+          "summary": "",
+          "publisher_name": "Usborne Books",
+          "publisher_text": "Usborne Books",
+          "marc_enc_level": "~",
+          "edition_info": "Hardcover; 2006-06",
+          "subject_ids": [
+            "childrens_books_literature_short_story_collections",
+            "childrens_books_people_places_royalty",
+            "childrens_books_fairy_tales_folk_tales_myths"
+          ],
+          "title_latin": "Stories of Princesses: Combined Volume",
+          "physical_description_text": "5.2\"x7.8\"x0.7\"; 0.8 lb; 144 pages",
+          "isbn13": "9780794513856",
+          "dewey_normal": "398.2"
+        },
+        "index_searched": "isbn"
+      }
+    }
+  }
+}

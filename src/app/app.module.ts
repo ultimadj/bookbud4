@@ -14,6 +14,8 @@ import {FormsModule} from "@angular/forms";
 import {UserAwareDataService} from "./user-aware-data.service";
 import {IsbndbService} from "./isbndb.service";
 import { AddContentComponent } from './add-content/add-content.component';
+import { AddBookComponent } from './add-book/add-book.component';
+import { BookListComponent } from './book-list/book-list.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -38,7 +40,7 @@ const firebaseAuthConfig = {
     AppRoutingModule,
     MaterialModule.forRoot()
   ],
-  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent, AddContentComponent ],
+  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent, AddContentComponent, AddBookComponent, BookListComponent ],
   providers: [UserService, UserAwareDataService, IsbndbService],
   bootstrap: [ AppComponent ]
 })

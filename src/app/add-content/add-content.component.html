@@ -1,5 +1,5 @@
 <md-menu #appMenu="mdMenu" y-position="above" x-position="before">
-  <button md-menu-item> Book </button>
+  <button md-menu-item (click)="book()"> Book </button>
 </md-menu>
 
 <button md-mini-fab class="add-fab" [mdMenuTriggerFor]="appMenu"><md-icon>add</md-icon></button>

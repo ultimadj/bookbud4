@@ -1,0 +1,6 @@
+<md-input-container>
+  <input md-input type="text" placeholder="Search" (keyup)="filter($event.target.value)">
+</md-input-container>
+<ul>
+  <li *ngFor="let book of displayedBooks"><a [routerLink]="['/book/', book.uuid]">{{book.title}}</a></li>
+</ul>

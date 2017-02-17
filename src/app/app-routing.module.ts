@@ -3,10 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import {BookComponent} from "./book/book.component";
 import {LoginComponent} from "./login/login.component";
 import {LandingComponent} from "./landing/landing.component";
+import {AddBookComponent} from "./add-book/add-book.component";
+import {BookListComponent} from "./book-list/book-list.component";
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {path: 'dashboard', component: LandingComponent},
-  { path: 'book',  component: BookComponent },
+  { path: 'addbook', component: AddBookComponent},
+  { path: 'books', component: BookListComponent},
   { path: 'login', component: LoginComponent }
 ];
 @NgModule({

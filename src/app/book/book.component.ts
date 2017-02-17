@@ -1,7 +1,6 @@
 /// <reference path="../../../\node_modules\quagga\type-definitions\quagga.d.ts" />
-import {Component, OnInit, OnDestroy, NgZone, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, NgZone, ViewChild, Input} from '@angular/core';
 import {UserAwareDataService} from "../user-aware-data.service";
-import {FirebaseObjectObservable} from "angularfire2";
 import {Book} from "../book";
 import {IsbndbService} from "../isbndb.service";
 import {IsbnSearchResult} from "../isbn-search-result";
@@ -24,7 +23,8 @@ declare var window:any;
   styleUrls: ['./book.component.css']
 })
 export class BookComponent implements OnDestroy, OnInit {
-  key:string = "fakebook";
+  basePath:string = 'books/';
+  @Input() uuid:string;
 
   bookPrevious:Book;
   book:Book;
@@ -71,7 +71,7 @@ export class BookComponent implements OnDestroy, OnInit {
     window.bookComponentRef = null;
   }
   ngOnInit(): void {
-    this.bookFbSub = this.uds.userObject(this.key).switch().subscribe((book) => {
+    this.bookFbSub = this.uds.userObject(this.key()).switch().subscribe((book) => {
       if(!book.$exists()) {
         console.log("Book was deleted from firebase. Leaving UI state alone.");
       }
@@ -79,6 +79,10 @@ export class BookComponent implements OnDestroy, OnInit {
       this.bookPrevious = Object.assign({}, this.book);
       console.log("Book updated.", this.book);
     });
+  }
+
+  private key() {
+    return `${this.basePath}${this.uuid}`;
   }
 
 
@@ -127,12 +131,14 @@ export class BookComponent implements OnDestroy, OnInit {
   }
 
   private codeReturned(result) {
+    console.log("newBookUuid", this.uuid);
     return result && result.codeResult && result.codeResult.code;
   }
 
   save() {
     console.log("Save", this.book);
-    this.uds.save(this.key, this.book);
+    this.book.uuid = this.uuid;
+    this.uds.save(this.key(), this.book);
   }
   cancel() {
     this.book = Object.assign({}, this.bookPrevious);

@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'dashboard', component: LandingComponent},
   { path: 'addbook', component: AddBookComponent},
   { path: 'books', component: BookListComponent},
+  { path: 'book/:id', component: BookComponent},
   { path: 'login', component: LoginComponent }
 ];
 @NgModule({

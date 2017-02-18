@@ -5,6 +5,7 @@ import {Book} from "../book";
 import {IsbndbService} from "../isbndb.service";
 import {IsbnSearchResult} from "../isbn-search-result";
 import {Subscription} from "rxjs";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 // import {QuaggaJSConfigObject} from "quagga/type-definitions/quagga";
 
 declare var Quagga: any;
@@ -35,16 +36,32 @@ export class BookComponent implements OnDestroy, OnInit {
   @ViewChild('isbncontainer') isbnContainerElement;
   @ViewChild('isbninput') isbnInputElement;
 
-  constructor(private uds:UserAwareDataService, private isbnService:IsbndbService, private _ngZone: NgZone) {
-    //http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
-    window.bookComponentRef = {component: this, zone: _ngZone};
-
-    this.waitingToDecode = false;
+  constructor(private uds:UserAwareDataService, private isbnService:IsbndbService, private _ngZone: NgZone, private route:ActivatedRoute, private router:Router) {
     this.book = new Book();
     this.bookPrevious = Object.assign({},this.book);
+  }
+  ngOnInit(): void {
+    //http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
+    window.bookComponentRef = {component: this, zone: this._ngZone};
+
+    this.route.params
+      .subscribe((params: Params) => {
+        if (params['id']) this.uuid = params['id'];
+        let key = this.key();
+        console.log(`Subscribing to ${key}`);
+        this.bookFbSub = this.uds.userObject(key).switch().subscribe((book) => {
+          if(!book.$exists()) {
+            console.log("Book was deleted from firebase. Leaving UI state alone.");
+          }
+          this.book = Object.assign({}, book);
+          this.bookPrevious = Object.assign({}, this.book);
+          console.log("Book updated.", this.book);
+        });
+    });
+    this.waitingToDecode = false;
 
     /*
-    Quagga barcode scanner settings
+     Quagga barcode scanner settings
      */
     this.quaggaStateTemplate =
       {
@@ -69,16 +86,6 @@ export class BookComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     if(this.bookFbSub) this.bookFbSub.unsubscribe();
     window.bookComponentRef = null;
-  }
-  ngOnInit(): void {
-    this.bookFbSub = this.uds.userObject(this.key()).switch().subscribe((book) => {
-      if(!book.$exists()) {
-        console.log("Book was deleted from firebase. Leaving UI state alone.");
-      }
-      this.book = Object.assign({}, book);
-      this.bookPrevious = Object.assign({}, this.book);
-      console.log("Book updated.", this.book);
-    });
   }
 
   private key() {
@@ -139,8 +146,10 @@ export class BookComponent implements OnDestroy, OnInit {
     console.log("Save", this.book);
     this.book.uuid = this.uuid;
     this.uds.save(this.key(), this.book);
+    this.router.navigateByUrl('/books')
   }
   cancel() {
     this.book = Object.assign({}, this.bookPrevious);
+    this.router.navigateByUrl('/books')
   }
 }

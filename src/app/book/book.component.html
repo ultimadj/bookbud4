@@ -2,21 +2,22 @@
   <h2>{{book.title}}</h2>
 
   <md-input-container class="wide">
-    <input md-input [(ngModel)]="book.title" placeholder="Title">
+    <input md-input [(ngModel)]="book.title" placeholder="Title" (keyup)="bookChanged=true;">
   </md-input-container><br>
 
   <md-input-container #isbncontainer>
-    <input md-input [(ngModel)]="book.isbn" placeholder="ISBN" #isbninput>
+    <input md-input [(ngModel)]="book.isbn" placeholder="ISBN" #isbninput (keyup)="bookChanged=true;">
   </md-input-container>
   <label for="barcodeUpload">
     <a md-icon-button><md-icon>file_upload</md-icon></a>
   </label>
   <md-spinner class="waiting-for-isbn" *ngIf="waitingToDecode"></md-spinner>
   <!--reset the value on click, let change fire decode-->
-  <input type="file" id="barcodeUpload" style="display: none" (click)="$event.target.value = null;" (change)="triggerIsbnDecode($event)">
+  <input type="file" id="barcodeUpload" style="display: none" (click)="$event.target.value = null;" (change)="triggerIsbnDecode($event);">
 
 
   <div class="actions">
-    <button md-mini-fab class="md-warn" (click)="cancel()"><md-icon>cancel</md-icon></button> <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button>
+    <div *ngIf="!bookChanged"><button md-mini-fab (click)="cancel()"><md-icon>keyboard_return</md-icon></button></div>
+    <div *ngIf="bookChanged"><button md-mini-fab class="md-warn" (click)="cancel()"><md-icon>cancel</md-icon></button> <button md-mini-fab (click)="save()"><md-icon>done</md-icon></button></div>
   </div>
 </div>

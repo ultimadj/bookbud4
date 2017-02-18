@@ -29,6 +29,7 @@ export class BookComponent implements OnDestroy, OnInit {
 
   bookPrevious:Book;
   book:Book;
+  bookChanged:boolean = false;
   bookFbSub:Subscription;
 
   quaggaStateTemplate:any;
@@ -36,14 +37,40 @@ export class BookComponent implements OnDestroy, OnInit {
   @ViewChild('isbncontainer') isbnContainerElement;
   @ViewChild('isbninput') isbnInputElement;
 
-  constructor(private uds:UserAwareDataService, private isbnService:IsbndbService, private _ngZone: NgZone, private route:ActivatedRoute, private router:Router) {
+  constructor(private uds:UserAwareDataService,
+              private isbnService:IsbndbService,
+              private _ngZone: NgZone,
+              private route:ActivatedRoute, private router:Router
+  ) {
     this.book = new Book();
     this.bookPrevious = Object.assign({},this.book);
+    window.bookComponentRef = {component: this, zone: this._ngZone};
+
+    /*
+     Quagga barcode scanner settings
+     */
+    this.quaggaStateTemplate =
+      {
+        inputStream: {
+          size: 800
+        },
+        locator: {
+          patchSize: "medium",
+          halfSample: false
+        },
+        numOfWorkers: 2,
+        decoder: {
+          readers: [{
+            format: "ean_reader",
+            config: {}
+          }]
+        },
+        locate: true,
+        src: null
+      };
   }
   ngOnInit(): void {
     //http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
-    window.bookComponentRef = {component: this, zone: this._ngZone};
-
     this.route.params
       .subscribe((params: Params) => {
         if (params['id']) this.uuid = params['id'];
@@ -60,28 +87,6 @@ export class BookComponent implements OnDestroy, OnInit {
     });
     this.waitingToDecode = false;
 
-    /*
-     Quagga barcode scanner settings
-     */
-    this.quaggaStateTemplate =
-      {
-        inputStream: {
-          size: 800
-        },
-        locator: {
-          patchSize: "medium",
-          halfSample: false
-        },
-        numOfWorkers: 1,
-        decoder: {
-          readers: [{
-            format: "ean_reader",
-            config: {}
-          }]
-        },
-        locate: true,
-        src: null
-      };
   }
   ngOnDestroy(): void {
     if(this.bookFbSub) this.bookFbSub.unsubscribe();
@@ -96,12 +101,14 @@ export class BookComponent implements OnDestroy, OnInit {
   // Handle the barcode scan event and start Quagga to decode it
   triggerIsbnDecode(event) {
     let files = event.srcElement.files;
-    let state = Object.assign({}, this.quaggaStateTemplate, {src: URL.createObjectURL(files[0])});
+    this.quaggaStateTemplate.src = URL.createObjectURL(files[0]);
     this.waitingToDecode = true;
-    Quagga.decodeSingle(state, window.bookComponentRef.component.inductCodeUpdateRequest);
+    console.log("triggerIsbnDecode");
+    Quagga.decodeSingle(this.quaggaStateTemplate, window.bookComponentRef.component.inductCodeUpdateRequest);
   }
   // Get back into the angular ecosystem and delegate the handling of the updated result
   public inductCodeUpdateRequest(result) {
+    console.log("Quagga responded with", result);
     window.bookComponentRef.zone.run(() => {
       window.bookComponentRef.component.handleCodeUpdate(result);
     });

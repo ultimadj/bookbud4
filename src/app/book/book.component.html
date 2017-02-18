@@ -8,7 +8,7 @@
   <md-input-container #isbncontainer>
     <input md-input [(ngModel)]="book.isbn" placeholder="ISBN" #isbninput (keyup)="bookChanged=true;">
   </md-input-container>
-  <label for="barcodeUpload">
+  <label for="barcodeUpload" (click)="bookChanged=true;">
     <a md-icon-button><md-icon>file_upload</md-icon></a>
   </label>
   <md-spinner class="waiting-for-isbn" *ngIf="waitingToDecode"></md-spinner>

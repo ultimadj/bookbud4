@@ -11,7 +11,8 @@ export class ProtectedDirective implements OnDestroy {
 
   constructor(private af:AngularFire, private router:Router) {
     this.sub = af.auth.subscribe((auth) => {
-      if (!auth || !auth.uid) {
+      if (auth && auth.uid) {
+      } else {
         console.log("Missing UID. Redirect to /login...");
         this.router.navigateByUrl("/login");
       }

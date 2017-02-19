@@ -4,6 +4,10 @@ import {AngularFireDatabase, FirebaseObjectObservable} from "angularfire2";
 import {Observable} from "rxjs";
 import User = firebase.User;
 
+/*
+Represents an object tied to the user key in FireBase. Components that depend on this should wrap their content in
+appProtected to ensure the user is logged in. Not logged in? They won't have a user key...
+ */
 @Injectable()
 export class UserAwareDataService {
   uid:string;
@@ -11,9 +15,11 @@ export class UserAwareDataService {
   constructor(private afd: AngularFireDatabase, private us: UserService) {}
 
   userObject(context: string): Observable<FirebaseObjectObservable<any>> {
-    return this.us.user.map((user:User) => {
-      this.uid = user.uid;
-      return this.afd.object(`/users/${this.uid}/${context}`, {preserveSnapshot: false});
+    return this.us.user
+      .filter((user:User, idx:number) => (user != null))
+      .map((user:User) => {
+        this.uid = user.uid;
+        return this.afd.object(`/users/${this.uid}/${context}`, {preserveSnapshot: false});
     });
   }
 

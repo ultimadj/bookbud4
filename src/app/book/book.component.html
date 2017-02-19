@@ -14,7 +14,7 @@
   <md-spinner class="waiting-for-isbn" *ngIf="waitingToDecode"></md-spinner>
   <!--reset the value on click, let change fire decode-->
   <input type="file" id="barcodeUpload" style="display: none" (click)="$event.target.value = null;" (change)="triggerIsbnDecode($event);">
-  <a md-icon-button><md-icon>find_replace</md-icon></a>
+  <a md-icon-button (click)="searchForCurrentIsbn()"><md-icon>find_replace</md-icon></a>
 
 
   <div class="actions">

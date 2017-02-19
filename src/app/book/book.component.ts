@@ -6,7 +6,6 @@ import {IsbndbService} from "../isbndb.service";
 import {IsbnSearchResult} from "../isbn-search-result";
 import {Subscription} from "rxjs";
 import {Router, ActivatedRoute, Params} from "@angular/router";
-// import {QuaggaJSConfigObject} from "quagga/type-definitions/quagga";
 
 declare var Quagga: any;
 declare var window:any;
@@ -44,6 +43,9 @@ export class BookComponent implements OnDestroy, OnInit {
   ) {
     this.book = new Book();
     this.bookPrevious = Object.assign({},this.book);
+  }
+  ngOnInit(): void {
+    //http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
     window.bookComponentRef = {component: this, zone: this._ngZone};
 
     /*
@@ -68,9 +70,8 @@ export class BookComponent implements OnDestroy, OnInit {
         locate: true,
         src: null
       };
-  }
-  ngOnInit(): void {
-    //http://stackoverflow.com/questions/35296704/angular2-how-to-call-component-function-from-outside-the-app
+
+    // Setup the book we're working with
     this.route.params
       .subscribe((params: Params) => {
         if (params['id']) this.uuid = params['id'];
@@ -119,20 +120,7 @@ export class BookComponent implements OnDestroy, OnInit {
     console.log("Quagga scan result", result);
     if(this.codeReturned(result)) {
       this.book.isbn = result.codeResult.code;
-
-      // Subscribe to updates til we've received something saying we got a result or an error
-      this.isbnService.isbnSearch(this.book.isbn).takeWhile((v, i) => (this.waitingToDecode)).subscribe((result:IsbnSearchResult) => {
-        if(!result.searched) {
-          console.log("Search started, but no response yet.");
-          return;
-        }
-        if(result.found) {
-          this.book.title = result.title;
-        } else {
-          this.isbnContainerElement.dividerColor = "warn";
-        }
-        this.waitingToDecode = false;
-      });
+      this.searchForCurrentIsbn();
     } else {
       console.log("No coderesult. ISBN was not read.");
       this.isbnContainerElement.dividerColor = "warn";
@@ -142,6 +130,24 @@ export class BookComponent implements OnDestroy, OnInit {
     // Focus the ISBN input (target of this process)
     console.log("isbnInputElement", this.isbnInputElement);
     this.isbnInputElement.nativeElement.focus();
+  }
+  public searchForCurrentIsbn() {
+    this.waitingToDecode = true;
+    // Subscribe to updates til we've received something saying we got a result or an error
+    this.isbnService.isbnSearch(this.book.isbn).takeWhile((v, i) => (this.waitingToDecode)).subscribe((result:IsbnSearchResult) => {
+      if(!result.searched) {
+        console.log("Search started, but no response yet.");
+        return;
+      }
+      if(result.found) {
+        this.book.title = result.title;
+      } else {
+        this.isbnContainerElement.dividerColor = "warn";
+      }
+      this.waitingToDecode = false;
+      this.isbnInputElement.nativeElement.focus();
+      this.bookChanged = true;
+    });
   }
 
   private codeReturned(result) {

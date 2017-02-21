@@ -16,6 +16,7 @@
   <input type="file" id="barcodeUpload" style="display: none" (click)="$event.target.value = null;" (change)="triggerIsbnDecode($event);">
   <a md-icon-button (click)="searchForCurrentIsbn()"><md-icon>find_replace</md-icon></a>
 
+  <app-taglist></app-taglist>
 
   <div class="actions">
     <div *ngIf="!bookChanged"><button md-mini-fab (click)="cancel()"><md-icon>keyboard_return</md-icon></button></div>

@@ -1,0 +1,12 @@
+<div>
+  <h3>Tags</h3>
+  <div *ngFor="let tag of tags; let i = index;">
+    <md-input-container>
+      <input md-input [(ngModel)]="tags[i].value">
+    </md-input-container>
+
+    <a md-icon-button (click)="deleteRow(i)"><md-icon>remove</md-icon></a>
+    <br>
+  </div>
+  <a md-icon-button (click)="newRow()"><md-icon>add</md-icon></a>
+</div>

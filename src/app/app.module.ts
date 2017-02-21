@@ -16,6 +16,7 @@ import {IsbndbService} from "./isbndb.service";
 import { AddContentComponent } from './add-content/add-content.component';
 import { AddBookComponent } from './add-book/add-book.component';
 import { BookListComponent } from './book-list/book-list.component';
+import { TaglistComponent } from './taglist/taglist.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -40,7 +41,7 @@ const firebaseAuthConfig = {
     AppRoutingModule,
     MaterialModule.forRoot()
   ],
-  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent, AddContentComponent, AddBookComponent, BookListComponent ],
+  declarations: [ AppComponent, BookComponent, ProtectedDirective, LoginComponent, LandingComponent, AddContentComponent, AddBookComponent, BookListComponent, TaglistComponent ],
   providers: [UserService, UserAwareDataService, IsbndbService],
   bootstrap: [ AppComponent ]
 })
